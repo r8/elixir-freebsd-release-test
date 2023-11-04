@@ -19,6 +19,16 @@ jobs:
     steps:
       - uses: actions/checkout@v1.0.0
 
+      - name: Build assets
+        run: |
+          brew install elixir
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix compile
+          MIX_ENV=prod mix assets.deploy
+          rm -R ./_build
+
       - name: Prepare release
         uses: cross-platform-actions/action@v0.15.0
         env:
@@ -29,13 +39,12 @@ jobs:
           operating_system: freebsd
           version: '13.2'
           run: |
-            sudo pkg install -y elixir erlang git node npm
+            sudo pkg install -y elixir erlang git
             mix local.rebar --force
             mix local.hex --force
             mix deps.get
-            cd assets && npm install
-            mix assets.deploy
             mix compile
+            mix phx.digest
             mix release
             set REVISION=`git describe`
             tar -zcvf $APPLICATION-$REVISION.tar.gz -C $RELEASE_PATH .
