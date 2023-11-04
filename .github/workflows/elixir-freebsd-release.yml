@@ -29,13 +29,13 @@ jobs:
           operating_system: freebsd
           version: '13.2'
           run: |
-            sudo pkg install -y elixir erlang git
+            sudo pkg install -y elixir erlang git node npm
             mix local.rebar --force
             mix local.hex --force
             mix deps.get
-            mix compile
-            mix phx.digest
+            cd assets && npm install
             mix assets.deploy
+            mix compile
             mix release
             set REVISION=`git describe`
             tar -zcvf $APPLICATION-$REVISION.tar.gz -C $RELEASE_PATH .
