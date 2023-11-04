@@ -35,6 +35,7 @@ jobs:
             mix deps.get
             mix compile
             mix phx.digest
+            mix assets.deploy
             mix release
             set REVISION=`git describe`
             tar -zcvf $APPLICATION-$REVISION.tar.gz -C $RELEASE_PATH .
