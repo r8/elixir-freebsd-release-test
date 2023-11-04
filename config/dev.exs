@@ -4,7 +4,7 @@ import Config
 config :freebsd_test, FreebsdTest.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: "db",
   database: "freebsd_test_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
